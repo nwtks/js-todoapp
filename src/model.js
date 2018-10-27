@@ -1,7 +1,7 @@
 import filters from './filter'
 
 const storage = window.localStorage
-const STORAGE_KEY = 'js-todo'
+const STORAGE_KEY = 'js-todoapp'
 
 function createModel() {
   const model = {
