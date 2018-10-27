@@ -16,7 +16,7 @@ function start(model, emitter, render) {
       model.editTodo = null
       render(model, emitter)
     })
-    .on('removeDones', e => {
+    .on('removeDones', () => {
       model.removeDones()
       render(model, emitter)
     })
@@ -24,7 +24,7 @@ function start(model, emitter, render) {
       model.toggle(e.todo)
       render(model, emitter)
     })
-    .on('toggleAll', e => {
+    .on('toggleAll', () => {
       model.toggleAll()
       render(model, emitter)
     })
@@ -32,7 +32,7 @@ function start(model, emitter, render) {
       model.editTodo = e.todo
       render(model, emitter)
     })
-    .on('cancelEdit', e => {
+    .on('cancelEdit', () => {
       model.editTodo = null
       render(model, emitter)
     })

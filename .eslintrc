@@ -1,6 +1,12 @@
 {
   "extends": "standard",
   "rules": {
-    "space-before-function-paren": "off"
+    "space-before-function-paren": "off",
+    "no-unused-vars": [
+      "error",
+      {
+        "varsIgnorePattern": "^h$"
+      }
+    ]
   }
 }

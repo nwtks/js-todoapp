@@ -21,137 +21,84 @@ function createView(model, emitter) {
   const remaining = filters.active(todos).length
   const filteredTodo = filters[visibility](todos)
 
-  return h(
-    'div',
-    { class: 'panel' },
-    h(
-      'div',
-      {
-        class: 'panel-heading'
-      },
-      'Todos'
-    ),
-    h(
-      'div',
-      {
-        class: 'panel-block',
-        dataset: { domsame: 'newTodo' }
-      },
-      h('input', {
-        class: 'input',
-        type: 'text',
-        placeholder: 'What needs to be done?',
-        autofocus: true,
-        onkeyup: ev => keyupNewTodo(ev, emitter)
-      })
-    ),
-    h(
-      'div',
-      {
-        class: 'panel-tabs'
-      },
-      h(
-        'a',
-        {
-          class: visibility === 'all' ? 'is-active' : null,
-          href: '#/all'
-        },
-        'All'
-      ),
-      h(
-        'a',
-        {
-          class: visibility === 'active' ? 'is-active' : null,
-          href: '#/active'
-        },
-        'Active'
-      ),
-      h(
-        'a',
-        {
-          class: visibility === 'done' ? 'is-active' : null,
-          href: '#/done'
-        },
-        'Done'
-      )
-    ),
-    h(
-      'label',
-      {
-        class: 'panel-block',
-        style: todos.length ? null : 'display:none'
-      },
-      h('input', {
-        type: 'checkbox',
-        checked: todos.every(todo => todo.done),
-        onchange: ev => emitter.emit('toggleAll')
-      }),
-      'Mark all as done'
-    ),
-    filteredTodo.map(todo =>
-      h(
-        'div',
-        {
-          class: 'panel-block todo-item',
-          dataset: { domkey: 'todo-' + todo.id }
-        },
-        h(
-          'div',
-          { style: todo !== editTodo ? null : 'display:none' },
-          h('input', {
-            type: 'checkbox',
-            checked: todo.done,
-            onchange: ev => emitter.emit('toggle', { todo: todo })
-          }),
-          h(
-            'label',
-            {
-              class: 'todo' + (todo.done ? ' done' : ''),
-              ondblclick: ev => emitter.emit('startEdit', { todo: todo })
-            },
-            todo.title
-          )
-        ),
-        h('button', {
-          class: 'delete',
-          style: todo !== editTodo ? null : 'display:none',
-          onclick: ev => emitter.emit('remove', { todo: todo })
-        }),
-        h('input', {
-          class: 'input',
-          style: todo === editTodo ? null : 'display:none',
-          type: 'text',
-          value: editTodo ? editTodo.title : null,
-          dataset: { editing: todo === editTodo ? '*' : null },
-          onblur: ev => doneEdit(ev, emitter, todo),
-          onkeyup: ev => keyupEdit(ev, emitter, todo)
-        })
-      )
-    ),
-    h(
-      'div',
-      {
-        class: 'panel-block',
-        style: todos.length ? null : 'display:none'
-      },
-      h('strong', {}, remaining),
-      remaining === 1 ? ' item left' : ' items left'
-    ),
-    h(
-      'div',
-      {
-        class: 'panel-block',
-        style: todos.length > remaining ? null : 'display:none'
-      },
-      h(
-        'button',
-        {
-          class: 'button is-link is-fullwidth',
-          onclick: ev => emitter.emit('removeDones')
-        },
-        'Clear done'
-      )
-    )
+  return (
+    <div class="panel">
+      <div class="panel-heading">Todos</div>
+      <div class="panel-block" data-domsame="newTodo">
+        <input
+          class="input"
+          type="text"
+          placeholder="What needs to be done?"
+          autofocus
+          onkeyup={ev => keyupNewTodo(ev, emitter)}
+        />
+      </div>
+      <div class="panel-tabs">
+        <a class={visibility === 'all' ? 'is-active' : null} href="#/all">
+          All
+        </a>
+        <a class={visibility === 'active' ? 'is-active' : null} href="#/active">
+          Active
+        </a>
+        <a class={visibility === 'done' ? 'is-active' : null} href="#/done">
+          Done
+        </a>
+      </div>
+      <label class="panel-block" style={todos.length ? null : 'display:none'}>
+        <input
+          type="checkbox"
+          checked={todos.every(todo => todo.done)}
+          onchange={() => emitter.emit('toggleAll')}
+        />
+        Mark all as done
+      </label>
+      {filteredTodo.map(todo => (
+        <div class="panel-block todo-item" data-domkey={'todo-' + todo.id}>
+          <div style={todo !== editTodo ? null : 'display:none'}>
+            <input
+              type="checkbox"
+              checked={todo.done}
+              onchange={() => emitter.emit('toggle', { todo: todo })}
+            />
+            <label
+              class={'todo' + (todo.done ? ' done' : '')}
+              ondblclick={() => emitter.emit('startEdit', { todo: todo })}
+            >
+              {todo.title}
+            </label>
+          </div>
+          <button
+            class="delete"
+            style={todo !== editTodo ? null : 'display:none'}
+            onclick={() => emitter.emit('remove', { todo: todo })}
+          />
+          <input
+            class="input"
+            style={todo === editTodo ? null : 'display:none'}
+            type="text"
+            value={editTodo ? editTodo.title : null}
+            data-editing={todo === editTodo ? '*' : null}
+            onblur={ev => doneEdit(ev, emitter, todo)}
+            onkeyup={ev => keyupEdit(ev, emitter, todo)}
+          />
+        </div>
+      ))}
+      <div class="panel-block" style={todos.length ? null : 'display:none'}>
+        <strong>{remaining}</strong>
+        {remaining === 1 ? ' item left' : ' items left'}
+      </div>
+      <div
+        class="panel-block"
+        style={todos.length > remaining ? null : 'display:none'}
+      >
+        <button
+          class="button is-link is-fullwidth"
+          onclick={() => emitter.emit('removeDones')}
+        >
+          Clear done
+        </button>
+      </div>
+    </div>
   )
 }
 
