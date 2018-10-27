@@ -9,46 +9,46 @@ function createModel() {
     editTodo: null,
     visibility: null,
     load() {
-      this.todos = JSON.parse(storage.getItem(STORAGE_KEY) || '[]')
+      model.todos = JSON.parse(storage.getItem(STORAGE_KEY) || '[]')
     },
     save() {
-      storage.setItem(STORAGE_KEY, JSON.stringify(this.todos))
+      storage.setItem(STORAGE_KEY, JSON.stringify(model.todos))
     },
     add(title) {
       const value = title && title.trim()
       if (!value) {
         return
       }
-      this.todos.push({
+      model.todos.push({
         id: Date.now(),
         title: value,
         done: false
       })
-      this.save()
+      model.save()
     },
     update(todo, title) {
       if (!title) {
         return
       }
       todo.title = title
-      this.save()
+      model.save()
     },
     remove(todo) {
-      this.todos = this.todos.filter(e => e.id !== todo.id)
-      this.save()
+      model.todos = model.todos.filter(e => e.id !== todo.id)
+      model.save()
     },
     removeDones() {
-      this.todos = filters.active(this.todos)
-      this.save()
+      model.todos = filters.active(model.todos)
+      model.save()
     },
     toggle(todo) {
       todo.done = !todo.done
-      this.save()
+      model.save()
     },
     toggleAll() {
-      const done = filters.done(this.todos).length === this.todos.length
-      this.todos.forEach(e => (e.done = !done))
-      this.save()
+      const done = filters.done(model.todos).length === model.todos.length
+      model.todos.forEach(e => (e.done = !done))
+      model.save()
     }
   }
   return model
