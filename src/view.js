@@ -156,7 +156,8 @@ function createView(model, emitter) {
 }
 
 function keyupNewTodo(ev, emitter) {
-  if (ev.key === 'Enter') {
+  const key = ev.key
+  if (key === 'Enter') {
     const title = ev.target.value
     ev.target.value = ''
     emitter.emit('add', { title: title })
@@ -164,9 +165,10 @@ function keyupNewTodo(ev, emitter) {
 }
 
 function keyupEdit(ev, emitter, todo) {
-  if (ev.key === 'Enter') {
+  const key = ev.key
+  if (key === 'Enter') {
     doneEdit(ev, emitter, todo)
-  } else if (ev.key === 'Escape') {
+  } else if (key === 'Escape' || key === 'Esc') {
     emitter.emit('cancelEdit', {})
   }
 }
