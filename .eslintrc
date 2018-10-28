@@ -1,12 +1,11 @@
 {
   "extends": "standard",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
   "rules": {
-    "space-before-function-paren": "off",
-    "no-unused-vars": [
-      "error",
-      {
-        "varsIgnorePattern": "^h$"
-      }
-    ]
+    "space-before-function-paren": "off"
   }
 }

@@ -1,4 +1,4 @@
-import h from 'h/src/h'
+import h from 'h/src/h' // eslint-disable-line no-unused-vars
 import sync from 'syncdom/src/syncdom'
 import filters from './filter'
 
