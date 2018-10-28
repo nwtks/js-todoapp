@@ -30,7 +30,7 @@ function createView(model, emitter) {
           type="text"
           placeholder="What needs to be done?"
           autofocus
-          onkeyup={ev => keyupNewTodo(ev, emitter)}
+          onkeypress={ev => keypressNewTodo(ev, emitter)}
         />
       </div>
       <div class="panel-tabs">
@@ -79,7 +79,7 @@ function createView(model, emitter) {
             value={editTodo ? editTodo.title : null}
             data-editing={todo === editTodo ? '*' : null}
             onblur={ev => doneEdit(ev, emitter, todo)}
-            onkeyup={ev => keyupEdit(ev, emitter, todo)}
+            onkeypress={ev => keypressEdit(ev, emitter, todo)}
           />
         </div>
       ))}
@@ -102,7 +102,7 @@ function createView(model, emitter) {
   )
 }
 
-function keyupNewTodo(ev, emitter) {
+function keypressNewTodo(ev, emitter) {
   const key = ev.key
   if (key === 'Enter') {
     const title = ev.target.value
@@ -111,7 +111,7 @@ function keyupNewTodo(ev, emitter) {
   }
 }
 
-function keyupEdit(ev, emitter, todo) {
+function keypressEdit(ev, emitter, todo) {
   const key = ev.key
   if (key === 'Enter') {
     doneEdit(ev, emitter, todo)
