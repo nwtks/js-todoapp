@@ -31,7 +31,6 @@
   },
   "scripts": {
     "build": "webpack",
-    "watch": "webpack -w",
-    "serve": "webpack-dev-server"
+    "dev": "NODE_ENV=development webpack-dev-server --hot --inline"
   }
 }

@@ -1,11 +1,16 @@
+const path = require('path')
+
+const NODE_ENV = process.env.NODE_ENV
+
 module.exports = {
-  mode: 'production',
+  mode: NODE_ENV || 'production',
   entry: './src/main.js',
   output: {
-    filename: 'main.js'
+    path: path.resolve(__dirname, './dist'),
+    filename: '[name].js'
   },
   devServer: {
-    contentBase: './dist',
+    contentBase: path.resolve(__dirname, './dist'),
     host: '0.0.0.0',
     port: 7777
   },
