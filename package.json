@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "emi": "git+https://github.com/nwtks/emi.git",
-    "h": "git+https://github.com/nwtks/h.git",
+    "hel": "git+https://github.com/nwtks/hel.git",
     "syncdom": "git+https://github.com/nwtks/syncdom.git"
   },
   "devDependencies": {

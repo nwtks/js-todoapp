@@ -4,10 +4,10 @@ const NODE_ENV = process.env.NODE_ENV
 
 module.exports = {
   mode: NODE_ENV || 'production',
-  entry: './src/main.js',
+  entry: { 'main.js': './src/main.js' },
   output: {
     path: path.resolve(__dirname, './dist'),
-    filename: '[name].js'
+    filename: '[name]'
   },
   devServer: {
     contentBase: path.resolve(__dirname, './dist'),
