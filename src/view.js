@@ -1,5 +1,5 @@
-import h from 'hel/src/hel' // eslint-disable-line no-unused-vars
-import sync from 'syncdom/src/syncdom'
+import h from 'hel' // eslint-disable-line no-unused-vars
+import sync from 'syncdom'
 import filters from './filter'
 
 function createRender(entry) {
@@ -34,15 +34,14 @@ function createView(model, emitter) {
         />
       </div>
       <div class="panel-tabs">
-        <a class={visibility === 'all' ? 'is-active' : null} href="#/all">
-          All
-        </a>
-        <a class={visibility === 'active' ? 'is-active' : null} href="#/active">
-          Active
-        </a>
-        <a class={visibility === 'done' ? 'is-active' : null} href="#/done">
-          Done
-        </a>
+        {['all', 'active', 'done'].map(vis => (
+          <a
+            class={'is-capitalized' + (visibility === vis ? ' is-active' : '')}
+            href={'#/' + vis}
+          >
+            {vis}
+          </a>
+        ))}
       </div>
       <label class="panel-block" style={todos.length ? null : 'display:none'}>
         <input

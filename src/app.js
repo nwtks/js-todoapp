@@ -1,6 +1,6 @@
 import filters from './filter'
 
-function start(model, emitter, render) {
+function start(model, render, emitter, router) {
   emitter
     .on('add', e => {
       model.add(e.title)
@@ -37,23 +37,21 @@ function start(model, emitter, render) {
       render(model, emitter)
     })
 
-  const router = createRouter(model, emitter, render)
-  window.addEventListener('hashchange', router)
-  model.load()
-  router()
-}
-
-function createRouter(model, emitter, render) {
-  return () => {
-    const visibility = window.location.hash.replace(/#\/?/, '')
+  function forward(visibility) {
     if (filters[visibility]) {
       model.visibility = visibility
     } else {
-      window.location.hash = ''
       model.visibility = 'all'
     }
     render(model, emitter)
   }
+
+  router
+    .route('#/:vis', param => forward(param.vis))
+    .route('*', () => forward('all'))
+
+  model.load()
+  router.start()
 }
 
 export default start
