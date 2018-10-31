@@ -40,15 +40,15 @@ function start(model, render, emitter, router) {
   function forward(visibility) {
     if (filters[visibility]) {
       model.visibility = visibility
+      render(model, emitter)
     } else {
-      model.visibility = 'all'
+      router.redirect('#/all')
     }
-    render(model, emitter)
   }
 
   router
     .route('#/:vis', param => forward(param.vis))
-    .route('*', () => forward('all'))
+    .route('*', () => forward())
 
   model.load()
   router.start()
