@@ -23,7 +23,7 @@ function createView(model, emitter) {
 
   return (
     <div class="panel">
-      <div class="panel-heading">Todos</div>
+      <div class="panel-heading has-background-info has-text-light">Todos</div>
       <div class="panel-block" data-domsame="newTodo">
         <input
           class="input"
@@ -91,7 +91,7 @@ function createView(model, emitter) {
         style={todos.length > remaining ? null : 'display:none'}
       >
         <button
-          class="button is-link is-fullwidth"
+          class="button is-primary is-fullwidth"
           onclick={() => emitter.emit('removeDones')}
         >
           Clear done
