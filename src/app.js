@@ -4,51 +4,48 @@ function start(model, render, emitter, router) {
   emitter
     .on('add', e => {
       model.add(e.title)
-      render(model, emitter)
+      router.render()
     })
     .on('update', e => {
       model.update(e.todo, e.title)
       model.editTodo = null
-      render(model, emitter)
+      router.render()
     })
     .on('remove', e => {
       model.remove(e.todo)
       model.editTodo = null
-      render(model, emitter)
+      router.render()
     })
     .on('removeDones', () => {
       model.removeDones()
-      render(model, emitter)
+      router.render()
     })
     .on('toggle', e => {
       model.toggle(e.todo)
-      render(model, emitter)
+      router.render()
     })
     .on('toggleAll', () => {
       model.toggleAll()
-      render(model, emitter)
+      router.render()
     })
     .on('startEdit', e => {
       model.editTodo = e.todo
-      render(model, emitter)
+      router.render()
     })
     .on('cancelEdit', () => {
       model.editTodo = null
-      render(model, emitter)
+      router.render()
     })
 
-  function forward(visibility) {
-    if (filters[visibility]) {
-      model.visibility = visibility
-      render(model, emitter)
-    } else {
-      router.redirect('#/all')
-    }
-  }
-
   router
-    .route('#/:vis', param => forward(param.vis))
-    .route('*', () => forward())
+    .route(
+      '#/:vis',
+      param =>
+        filters[param.vis]
+          ? () => render(model, emitter, param.vis)
+          : router.redirect('#/all')
+    )
+    .route('*', () => router.redirect('#/all'))
 
   model.load()
   router.start()

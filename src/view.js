@@ -3,8 +3,8 @@ import sync from 'syncdom'
 import filters from './filter'
 
 function createRender(entry) {
-  return (model, emitter) => {
-    const view = createView(model, emitter)
+  return (model, emitter, visibility) => {
+    const view = createView(model, emitter, visibility)
     const oldView = entry.lastChild
     if (oldView) {
       sync(oldView, view)
@@ -14,10 +14,9 @@ function createRender(entry) {
   }
 }
 
-function createView(model, emitter) {
+function createView(model, emitter, visibility) {
   const todos = model.todos
   const editTodo = model.editTodo
-  const visibility = model.visibility
   const remaining = filters.active(todos).length
   const filteredTodo = filters[visibility](todos)
 

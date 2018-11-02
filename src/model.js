@@ -7,7 +7,6 @@ function createModel() {
   const model = {
     todos: [],
     editTodo: null,
-    visibility: null,
     load() {
       model.todos = JSON.parse(storage.getItem(STORAGE_KEY) || '[]')
     },
