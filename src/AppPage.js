@@ -1,22 +1,11 @@
 import h from 'hel' // eslint-disable-line no-unused-vars
-import sync from 'syncdom'
 import filters from './filter'
 
-function createRender(entry) {
-  return (model, emitter, visibility) => {
-    const view = createView(model, emitter, visibility)
-    const oldView = entry.lastChild
-    if (oldView) {
-      sync(oldView, view)
-    } else {
-      entry.appendChild(view)
-    }
-  }
-}
-
-function createView(model, emitter, visibility) {
-  const todos = model.todos
-  const editTodo = model.editTodo
+function AppPage(props) {
+  const emitter = props.emitter
+  const todos = props.todos
+  const editTodo = props.editTodo
+  const visibility = props.visibility
   const remaining = filters.active(todos).length
   const filteredTodo = filters[visibility](todos)
 
@@ -131,4 +120,4 @@ function doneEdit(ev, emitter, todo) {
   }
 }
 
-export default createRender
+export default AppPage

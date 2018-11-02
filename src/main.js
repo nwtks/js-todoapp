@@ -1,6 +1,6 @@
 import emi from 'emi'
 import hashpath from 'hashpath'
-import createRender from './view'
+import createRender from './render'
 import createModel from './model'
 import start from './app'
 
