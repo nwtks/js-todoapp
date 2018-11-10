@@ -7,6 +7,7 @@ function createRender(entry) {
       emitter: emitter,
       todos: model.todos,
       editTodo: model.editTodo,
+      newTodo: model.newTodo,
       visibility: visibility
     })
     const oldView = entry.lastChild

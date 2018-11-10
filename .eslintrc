@@ -1,11 +1,21 @@
 {
   "extends": "standard",
   "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
     }
   },
+  "plugins": ["eslint-plugin-react"],
   "rules": {
-    "space-before-function-paren": "off"
+    "space-before-function-paren": "off",
+    "react/jsx-uses-vars": "error",
+    "react/jsx-uses-react": "error"
+  },
+  "settings": {
+    "react": {
+      "pragma": "h"
+    }
   }
 }

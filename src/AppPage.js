@@ -1,24 +1,25 @@
-import h from 'hel' // eslint-disable-line no-unused-vars
+import h from 'hel'
 import filters from './filter'
 
 function AppPage(props) {
   const emitter = props.emitter
   const todos = props.todos
-  const editTodo = props.editTodo
+  const newTodo = props.newTodo
   const visibility = props.visibility
   const remaining = filters.active(todos).length
   const filteredTodo = filters[visibility](todos)
-
   return (
     <div class="panel">
       <div class="panel-heading has-background-info has-text-light">Todos</div>
-      <div class="panel-block" data-domsame="newTodo">
+      <div class="panel-block">
         <input
           class="input"
           type="text"
+          value={newTodo}
           placeholder="What needs to be done?"
           autofocus
           onkeypress={ev => keypressNewTodo(ev, emitter)}
+          oninput={ev => emitter.emit('inputNew', { title: ev.target.value })}
         />
       </div>
       <div class="panel-tabs">
@@ -40,39 +41,11 @@ function AppPage(props) {
         Mark all as done
       </label>
       {filteredTodo.map(todo => (
-        <div class="panel-block todo-item" data-domkey={'todo-' + todo.id}>
-          <div style={todo !== editTodo ? null : 'display:none'}>
-            <input
-              type="checkbox"
-              checked={todo.done}
-              onchange={() => emitter.emit('toggle', { todo: todo })}
-            />
-            <label
-              class={'todo' + (todo.done ? ' done' : '')}
-              ondblclick={() => emitter.emit('startEdit', { todo: todo })}
-            >
-              {todo.title}
-            </label>
-          </div>
-          <button
-            class="delete"
-            style={todo !== editTodo ? null : 'display:none'}
-            onclick={() => emitter.emit('remove', { todo: todo })}
-          />
-          <input
-            class="input"
-            style={todo === editTodo ? null : 'display:none'}
-            type="text"
-            value={editTodo ? editTodo.title : null}
-            data-editing={todo === editTodo ? '*' : null}
-            onblur={ev => doneEdit(ev, emitter, todo)}
-            onkeypress={ev => keypressEdit(ev, emitter, todo)}
-          />
-        </div>
+        <TodoItem todo={todo} emitter={emitter} editTodo={props.editTodo} />
       ))}
       <div class="panel-block" style={todos.length ? null : 'display:none'}>
         <strong>{remaining}</strong>
-        {remaining === 1 ? ' item left' : ' items left'}
+        {remaining === 1 ? 'item' : 'items'} left
       </div>
       <div
         class="panel-block"
@@ -85,6 +58,43 @@ function AppPage(props) {
           Clear done
         </button>
       </div>
+    </div>
+  )
+}
+
+function TodoItem(props) {
+  const emitter = props.emitter
+  const todo = props.todo
+  const editTodo = props.editTodo
+  return (
+    <div class="panel-block todo-item" data-domkey={'todo-' + todo.id}>
+      <div style={todo !== editTodo ? null : 'display:none'}>
+        <input
+          type="checkbox"
+          checked={todo.done}
+          onchange={() => emitter.emit('toggle', { todo: todo })}
+        />
+        <label
+          class={'todo' + (todo.done ? ' done' : '')}
+          ondblclick={() => emitter.emit('startEdit', { todo: todo })}
+        >
+          {todo.title}
+        </label>
+      </div>
+      <button
+        class="delete"
+        style={todo !== editTodo ? null : 'display:none'}
+        onclick={() => emitter.emit('remove', { todo: todo })}
+      />
+      <input
+        class="input"
+        style={todo === editTodo ? null : 'display:none'}
+        type="text"
+        value={editTodo ? editTodo.title : null}
+        data-editing={todo === editTodo ? '*' : null}
+        onblur={ev => doneEdit(ev, emitter, todo)}
+        onkeypress={ev => keypressEdit(ev, emitter, todo)}
+      />
     </div>
   )
 }
