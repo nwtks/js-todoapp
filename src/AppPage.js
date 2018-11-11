@@ -2,10 +2,7 @@ import h from 'hel'
 import filters from './filter'
 
 function AppPage(props) {
-  const emitter = props.emitter
-  const todos = props.todos
-  const newTodo = props.newTodo
-  const visibility = props.visibility
+  const { emitter, todos, editTodo, newTodo, visibility } = props
   const remaining = filters.active(todos).length
   const filteredTodo = filters[visibility](todos)
   return (
@@ -32,7 +29,7 @@ function AppPage(props) {
           </a>
         ))}
       </div>
-      <label class="panel-block" style={todos.length ? null : 'display:none'}>
+      <label class="panel-block" style={show(todos.length)}>
         <input
           type="checkbox"
           checked={todos.every(todo => todo.done)}
@@ -41,16 +38,13 @@ function AppPage(props) {
         Mark all as done
       </label>
       {filteredTodo.map(todo => (
-        <TodoItem todo={todo} emitter={emitter} editTodo={props.editTodo} />
+        <TodoItem todo={todo} emitter={emitter} editTodo={editTodo} />
       ))}
-      <div class="panel-block" style={todos.length ? null : 'display:none'}>
+      <div class="panel-block" style={show(todos.length)}>
         <strong>{remaining}</strong>
-        {remaining === 1 ? 'item' : 'items'} left
+        {remaining === 1 ? ' item' : ' items'} left
       </div>
-      <div
-        class="panel-block"
-        style={todos.length > remaining ? null : 'display:none'}
-      >
+      <div class="panel-block" style={show(todos.length > remaining)}>
         <button
           class="button is-primary is-fullwidth"
           onclick={() => emitter.emit('removeDones')}
@@ -63,12 +57,10 @@ function AppPage(props) {
 }
 
 function TodoItem(props) {
-  const emitter = props.emitter
-  const todo = props.todo
-  const editTodo = props.editTodo
+  const { emitter, todo, editTodo } = props
   return (
     <div class="panel-block todo-item" data-domkey={'todo-' + todo.id}>
-      <div style={todo !== editTodo ? null : 'display:none'}>
+      <div style={show(todo !== editTodo)}>
         <input
           type="checkbox"
           checked={todo.done}
@@ -83,12 +75,12 @@ function TodoItem(props) {
       </div>
       <button
         class="delete"
-        style={todo !== editTodo ? null : 'display:none'}
+        style={show(todo !== editTodo)}
         onclick={() => emitter.emit('remove', { todo: todo })}
       />
       <input
         class="input"
-        style={todo === editTodo ? null : 'display:none'}
+        style={show(todo === editTodo)}
         type="text"
         value={editTodo ? editTodo.title : null}
         data-editing={todo === editTodo ? '*' : null}
@@ -128,6 +120,10 @@ function doneEdit(ev, emitter, todo) {
   } else {
     emitter.emit('remove', { todo: todo })
   }
+}
+
+function show(a) {
+  return a ? null : 'display:none'
 }
 
 export default AppPage
