@@ -1,8 +1,8 @@
-import h from 'hel'
+import h from 'hec'
 import filters from './filter'
 
 function AppPage(props) {
-  const { emitter, todos, editTodo, newTodo, visibility } = props
+  const { emit, todos, editTodo, newTodo, visibility } = props
   const remaining = filters.active(todos).length
   const filteredTodo = filters[visibility](todos)
   return (
@@ -15,8 +15,8 @@ function AppPage(props) {
           value={newTodo}
           placeholder="What needs to be done?"
           autofocus
-          onkeypress={ev => keypressNewTodo(ev, emitter)}
-          oninput={ev => emitter.emit('inputNew', { title: ev.target.value })}
+          onkeydown={ev => keydownNewTodo(ev, emit)}
+          oninput={ev => emit('inputNew', { title: ev.target.value })}
         />
       </div>
       <div class="panel-tabs">
@@ -33,12 +33,12 @@ function AppPage(props) {
         <input
           type="checkbox"
           checked={todos.every(todo => todo.done)}
-          onchange={() => emitter.emit('toggleAll')}
+          onchange={() => emit('toggleAll')}
         />
         Mark all as done
       </label>
       {filteredTodo.map(todo => (
-        <TodoItem todo={todo} emitter={emitter} editTodo={editTodo} />
+        <TodoItem todo={todo} emit={emit} editTodo={editTodo} />
       ))}
       <div class="panel-block" style={show(todos.length)}>
         <strong>{remaining}</strong>
@@ -47,7 +47,7 @@ function AppPage(props) {
       <div class="panel-block" style={show(todos.length > remaining)}>
         <button
           class="button is-primary is-fullwidth"
-          onclick={() => emitter.emit('removeDones')}
+          onclick={() => emit('removeDones')}
         >
           Clear done
         </button>
@@ -57,18 +57,18 @@ function AppPage(props) {
 }
 
 function TodoItem(props) {
-  const { emitter, todo, editTodo } = props
+  const { emit, todo, editTodo } = props
   return (
     <div class="panel-block todo-item" data-domkey={'todo-' + todo.id}>
       <div style={show(todo !== editTodo)}>
         <input
           type="checkbox"
           checked={todo.done}
-          onchange={() => emitter.emit('toggle', { todo: todo })}
+          onchange={() => emit('toggle', { todo: todo })}
         />
         <label
           class={'todo' + (todo.done ? ' done' : '')}
-          ondblclick={() => emitter.emit('startEdit', { todo: todo })}
+          ondblclick={() => emit('startEdit', { todo: todo })}
         >
           {todo.title}
         </label>
@@ -76,7 +76,7 @@ function TodoItem(props) {
       <button
         class="delete"
         style={show(todo !== editTodo)}
-        onclick={() => emitter.emit('remove', { todo: todo })}
+        onclick={() => emit('remove', { todo: todo })}
       />
       <input
         class="input"
@@ -84,41 +84,41 @@ function TodoItem(props) {
         type="text"
         value={editTodo ? editTodo.title : null}
         data-editing={todo === editTodo ? '*' : null}
-        onblur={ev => doneEdit(ev, emitter, todo)}
-        onkeypress={ev => keypressEdit(ev, emitter, todo)}
+        onblur={ev => doneEdit(ev, emit, todo)}
+        onkeydown={ev => keydownEdit(ev, emit, todo)}
       />
     </div>
   )
 }
 
-function keypressNewTodo(ev, emitter) {
+function keydownNewTodo(ev, emit) {
   const key = ev.key
   if (key === 'Enter') {
     const title = ev.target.value
     ev.target.value = ''
-    emitter.emit('add', { title: title })
+    emit('add', { title: title })
   }
 }
 
-function keypressEdit(ev, emitter, todo) {
+function keydownEdit(ev, emit, todo) {
   const key = ev.key
   if (key === 'Enter') {
-    doneEdit(ev, emitter, todo)
+    doneEdit(ev, emit, todo)
   } else if (key === 'Escape' || key === 'Esc') {
-    emitter.emit('cancelEdit', {})
+    emit('cancelEdit', {})
   }
 }
 
-function doneEdit(ev, emitter, todo) {
+function doneEdit(ev, emit, todo) {
   if (!ev.target.dataset.editing) {
     return
   }
   const v = ev.target.value
   const title = v && v.trim()
   if (title) {
-    emitter.emit('update', { todo: todo, title: title })
+    emit('update', { todo: todo, title: title })
   } else {
-    emitter.emit('remove', { todo: todo })
+    emit('remove', { todo: todo })
   }
 }
 

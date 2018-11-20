@@ -1,21 +1,25 @@
 import sync from 'syncdom'
+import scheduler from 'rafsch'
 import AppPage from './AppPage'
 
 function createRender(entry) {
-  return (model, emitter, visibility) => {
+  const schd = scheduler()
+  return (model, emit, visibility) => {
     const view = AppPage({
-      emitter: emitter,
+      emit: emit,
       todos: model.todos,
       editTodo: model.editTodo,
       newTodo: model.newTodo,
       visibility: visibility
     })
-    const oldView = entry.lastChild
-    if (oldView) {
-      sync(oldView, view)
-    } else {
-      entry.appendChild(view)
-    }
+    schd(() => {
+      const oldView = entry.lastChild
+      if (oldView) {
+        sync(oldView, view)
+      } else {
+        entry.appendChild(view)
+      }
+    })
   }
 }
 

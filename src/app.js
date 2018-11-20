@@ -44,7 +44,7 @@ function start(model, render, emitter, router) {
   router
     .route('#/:vis', (param, next) =>
       filters[param.vis]
-        ? next(() => render(model, emitter, param.vis))
+        ? next(() => render(model, emitter.emit, param.vis))
         : router.redirect('#/all')
     )
     .route('*', () => router.redirect('#/all'))

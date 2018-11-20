@@ -12,7 +12,7 @@ module.exports = {
   ],
   plugins: [
     [
-      'transform-react-jsx',
+      '@babel/plugin-transform-react-jsx',
       {
         pragma: 'h'
       }
