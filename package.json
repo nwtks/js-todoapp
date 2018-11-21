@@ -6,11 +6,11 @@
   "author": "nwtks",
   "license": "MIT",
   "dependencies": {
-    "hashpath": "git+https://github.com/nwtks/hashpath.git",
-    "hec": "git+https://github.com/nwtks/hec.git",
-    "rafsch": "git+https://github.com/nwtks/rafsch.git",
-    "syncdom": "git+https://github.com/nwtks/syncdom.git",
-    "temi": "git+https://github.com/nwtks/temi.git"
+    "hashedpath": "^0.1.0",
+    "hec": "^0.1.0",
+    "rafsch": "^0.1.0",
+    "syncdom": "^0.1.0",
+    "temi": "^0.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",

@@ -1,5 +1,5 @@
 import emitter from 'temi'
-import hashpath from 'hashpath'
+import router from 'hashedpath'
 import createRender from './render'
 import createModel from './model'
 import start from './app'
@@ -8,5 +8,5 @@ start(
   createModel(),
   createRender(document.getElementById('app')),
   emitter(),
-  hashpath()
+  router()
 )
