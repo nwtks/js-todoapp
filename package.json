@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "description": "sample todo app.",
-  "author": "nwtks",
   "license": "MIT",
+  "author": "nwtks",
   "dependencies": {
     "hashedpath": "^0.1.0",
-    "hec": "^0.1.0",
+    "patch2dom": "^0.1.0",
     "rafsch": "^0.1.0",
-    "syncdom": "^0.1.0",
-    "temi": "^0.1.0"
+    "temi": "^0.1.0",
+    "vnoc": "^0.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",

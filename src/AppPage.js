@@ -1,4 +1,4 @@
-import h from 'hec'
+import h from 'vnoc'
 import filters from './filter'
 
 function AppPage(props) {
@@ -59,7 +59,7 @@ function AppPage(props) {
 function TodoItem(props) {
   const { emit, todo, editTodo } = props
   return (
-    <div class="panel-block todo-item" data-domkey={'todo-' + todo.id}>
+    <div class="panel-block todo-item" domkey={'todo-' + todo.id}>
       <div style={show(todo !== editTodo)}>
         <input
           type="checkbox"

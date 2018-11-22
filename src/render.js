@@ -1,4 +1,4 @@
-import sync from 'syncdom'
+import patch from 'patch2dom'
 import scheduler from 'rafsch'
 import AppPage from './AppPage'
 
@@ -12,14 +12,7 @@ function createRender(entry) {
       newTodo: model.newTodo,
       visibility: visibility
     })
-    schd(() => {
-      const oldView = entry.lastChild
-      if (oldView) {
-        sync(oldView, view)
-      } else {
-        entry.appendChild(view)
-      }
-    })
+    schd(() => patch(entry, view))
   }
 }
 
