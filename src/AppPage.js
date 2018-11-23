@@ -8,7 +8,7 @@ function AppPage(props) {
   return (
     <div class="panel">
       <div class="panel-heading has-background-info has-text-light">Todos</div>
-      <div class="panel-block">
+      <div domkey="new-todo" class="panel-block">
         <input
           class="input"
           type="text"
@@ -19,7 +19,7 @@ function AppPage(props) {
           oninput={ev => emit('inputNew', { title: ev.target.value })}
         />
       </div>
-      <div class="panel-tabs">
+      <div domkey="nav" class="panel-tabs">
         {['all', 'active', 'done'].map(vis => (
           <a
             class={'is-capitalized' + (visibility === vis ? ' is-active' : '')}
@@ -29,7 +29,7 @@ function AppPage(props) {
           </a>
         ))}
       </div>
-      <label class="panel-block" style={show(todos.length)}>
+      <label domkey="mark-all" class="panel-block" style={show(todos.length)}>
         <input
           type="checkbox"
           checked={todos.every(todo => todo.done)}
@@ -40,11 +40,15 @@ function AppPage(props) {
       {filteredTodo.map(todo => (
         <TodoItem todo={todo} emit={emit} editTodo={editTodo} />
       ))}
-      <div class="panel-block" style={show(todos.length)}>
+      <div domkey="status" class="panel-block" style={show(todos.length)}>
         <strong>{remaining}</strong>
         {remaining === 1 ? ' item' : ' items'} left
       </div>
-      <div class="panel-block" style={show(todos.length > remaining)}>
+      <div
+        domkey="remove-dones"
+        class="panel-block"
+        style={show(todos.length > remaining)}
+      >
         <button
           class="button is-primary is-fullwidth"
           onclick={() => emit('removeDones')}
@@ -59,7 +63,7 @@ function AppPage(props) {
 function TodoItem(props) {
   const { emit, todo, editTodo } = props
   return (
-    <div class="panel-block todo-item" domkey={'todo-' + todo.id}>
+    <div domkey={'todo-' + todo.id} class="panel-block todo-item">
       <div style={show(todo !== editTodo)}>
         <input
           type="checkbox"
@@ -123,7 +127,7 @@ function doneEdit(ev, emit, todo) {
 }
 
 function show(a) {
-  return a ? null : 'display:none'
+  return a ? '' : 'display:none'
 }
 
 export default AppPage

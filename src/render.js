@@ -1,9 +1,7 @@
 import patch from 'patch2dom'
-import scheduler from 'rafsch'
 import AppPage from './AppPage'
 
-function createRender(entry) {
-  const schd = scheduler()
+function createRender(entry, scheduler) {
   return (model, emit, visibility) => {
     const view = AppPage({
       emit: emit,
@@ -12,7 +10,7 @@ function createRender(entry) {
       newTodo: model.newTodo,
       visibility: visibility
     })
-    schd(() => patch(entry, view))
+    scheduler(() => patch(entry, view))
   }
 }
 
