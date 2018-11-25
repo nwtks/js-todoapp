@@ -10,6 +10,7 @@
   "plugins": ["eslint-plugin-react"],
   "rules": {
     "space-before-function-paren": "off",
+    "indent": "off",
     "react/jsx-uses-vars": "error",
     "react/jsx-uses-react": "error"
   },

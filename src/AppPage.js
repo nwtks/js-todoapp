@@ -1,8 +1,11 @@
 import h from 'vnoc'
 import filters from './filter'
 
+const NAVS = ['all', 'active', 'done']
+
 function AppPage(props) {
-  const { emit, todos, editTodo, newTodo, visibility } = props
+  const emit = props.emit
+  const { todos, editTodo, newTodo, visibility } = props.state
   const remaining = filters.active(todos).length
   const filteredTodo = filters[visibility](todos)
   return (
@@ -20,7 +23,7 @@ function AppPage(props) {
         />
       </div>
       <div domkey="nav" class="panel-tabs">
-        {['all', 'active', 'done'].map(vis => (
+        {NAVS.map(vis => (
           <a
             class={'is-capitalized' + (visibility === vis ? ' is-active' : '')}
             href={'#/' + vis}

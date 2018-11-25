@@ -1,13 +1,14 @@
-import emitter from 'temi'
-import router from 'hashedpath'
-import scheduler from 'rafsch'
-import createRender from './render'
-import createModel from './model'
+import createEmitter from 'temi'
+import createRouter from 'hashedpath'
+import createScheduler from 'rafsch'
+import patch from 'patch2dom'
 import start from './app'
 
-start(
-  createModel(),
-  createRender(document.getElementById('app'), scheduler()),
-  emitter(),
-  router()
-)
+const emitter = createEmitter()
+const router = createRouter()
+const scheduler = createScheduler()
+const entry = document.getElementById('app')
+function render(view, state) {
+  scheduler(() => patch(entry, view({ state: state, emit: emitter.emit })))
+}
+start(render, emitter, router)

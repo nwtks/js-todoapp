@@ -1,6 +1,10 @@
+import createModel from './model'
+import AppPage from './AppPage'
 import filters from './filter'
 
-function start(model, render, emitter, router) {
+function start(render, emitter, router) {
+  const model = createModel()
+
   emitter
     .on('add', e => {
       model.add(e.title)
@@ -44,7 +48,14 @@ function start(model, render, emitter, router) {
   router
     .route('#/:vis', (param, next) =>
       filters[param.vis]
-        ? next(() => render(model, emitter.emit, param.vis))
+        ? next(() =>
+            render(AppPage, {
+              todos: model.todos,
+              editTodo: model.editTodo,
+              newTodo: model.newTodo,
+              visibility: param.vis
+            })
+          )
         : router.redirect('#/all')
     )
     .route('*', () => router.redirect('#/all'))
