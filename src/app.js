@@ -2,7 +2,7 @@ import createModel from './model'
 import AppPage from './AppPage'
 import filters from './filter'
 
-function start(render, emitter, router) {
+const start = (render, emitter, router) => {
   const model = createModel()
 
   emitter

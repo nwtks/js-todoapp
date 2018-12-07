@@ -8,7 +8,6 @@ const emitter = createEmitter()
 const router = createRouter()
 const scheduler = createScheduler()
 const entry = document.getElementById('app')
-function render(view, state) {
+const render = (view, state) =>
   scheduler(() => patch(entry, view({ state: state, emit: emitter.emit })))
-}
 start(render, emitter, router)

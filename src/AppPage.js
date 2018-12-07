@@ -3,11 +3,17 @@ import filters from './filter'
 
 const NAVS = ['all', 'active', 'done']
 
-function AppPage(props) {
+const AppPage = props => {
   const emit = props.emit
   const { todos, editTodo, newTodo, visibility } = props.state
   const remaining = filters.active(todos).length
   const filteredTodo = filters[visibility](todos)
+  setTimeout(() => {
+    const editing = document.querySelector('[data-editing]')
+    if (editing) {
+      editing.focus()
+    }
+  }, 0)
   return (
     <div class="panel">
       <div class="panel-heading has-background-info has-text-light">Todos</div>
@@ -35,6 +41,7 @@ function AppPage(props) {
       <label domkey="mark-all" class="panel-block" style={show(todos.length)}>
         <input
           type="checkbox"
+          value=""
           checked={todos.every(todo => todo.done)}
           onchange={() => emit('toggleAll')}
         />
@@ -63,13 +70,14 @@ function AppPage(props) {
   )
 }
 
-function TodoItem(props) {
+const TodoItem = props => {
   const { emit, todo, editTodo } = props
   return (
     <div domkey={'todo-' + todo.id} class="panel-block todo-item">
       <div style={show(todo !== editTodo)}>
         <input
           type="checkbox"
+          value=""
           checked={todo.done}
           onchange={() => emit('toggle', { todo: todo })}
         />
@@ -98,7 +106,7 @@ function TodoItem(props) {
   )
 }
 
-function keydownNewTodo(ev, emit) {
+const keydownNewTodo = (ev, emit) => {
   const key = ev.key
   if (key === 'Enter') {
     const title = ev.target.value
@@ -107,7 +115,7 @@ function keydownNewTodo(ev, emit) {
   }
 }
 
-function keydownEdit(ev, emit, todo) {
+const keydownEdit = (ev, emit, todo) => {
   const key = ev.key
   if (key === 'Enter') {
     doneEdit(ev, emit, todo)
@@ -116,7 +124,7 @@ function keydownEdit(ev, emit, todo) {
   }
 }
 
-function doneEdit(ev, emit, todo) {
+const doneEdit = (ev, emit, todo) => {
   if (!ev.target.dataset.editing) {
     return
   }
@@ -129,8 +137,6 @@ function doneEdit(ev, emit, todo) {
   }
 }
 
-function show(a) {
-  return a ? '' : 'display:none'
-}
+const show = a => (a ? '' : 'display:none')
 
 export default AppPage
