@@ -1,35 +1,35 @@
-import h from 'vnoc'
-import filters from './filter'
+import h from 'vnoc';
+import filters from './filter';
 
-const NAVS = ['all', 'active', 'done']
+const NAVS = ['all', 'active', 'done'];
 
-const AppPage = props => {
-  const emit = props.emit
-  const { todos, editTodo, newTodo, visibility } = props.state
-  const remaining = filters.active(todos).length
-  const filteredTodo = filters[visibility](todos)
+const AppPage = (props) => {
+  const { emit } = props;
+  const { todos, editTodo, newTodo, visibility } = props.state;
+  const remaining = filters.active(todos).length;
+  const filteredTodo = filters[visibility](todos);
   setTimeout(() => {
-    const editing = document.querySelector('[data-editing]')
+    const editing = document.querySelector('[data-editing]');
     if (editing) {
-      editing.focus()
+      editing.focus();
     }
-  }, 0)
+  }, 0);
   return (
-    <div class="panel">
-      <div class="panel-heading has-background-info has-text-light">Todos</div>
-      <div domkey="new-todo" class="panel-block">
+    <div class='panel'>
+      <div class='panel-heading has-background-info has-text-light'>Todos</div>
+      <div domkey='new-todo' class='panel-block'>
         <input
-          class="input"
-          type="text"
+          class='input'
+          type='text'
           value={newTodo}
-          placeholder="What needs to be done?"
+          placeholder='What needs to be done?'
           autofocus
-          onkeydown={ev => keydownNewTodo(ev, emit)}
-          oninput={ev => emit('inputNew', { title: ev.target.value })}
+          onkeydown={(ev) => keydownNewTodo(ev, emit)}
+          oninput={(ev) => emit('inputNew', { title: ev.target.value })}
         />
       </div>
-      <div domkey="nav" class="panel-tabs">
-        {NAVS.map(vis => (
+      <div domkey='nav' class='panel-tabs'>
+        {NAVS.map((vis) => (
           <a
             class={'is-capitalized' + (visibility === vis ? ' is-active' : '')}
             href={'#/' + vis}
@@ -38,46 +38,46 @@ const AppPage = props => {
           </a>
         ))}
       </div>
-      <label domkey="mark-all" class="panel-block" style={show(todos.length)}>
+      <label domkey='mark-all' class='panel-block' style={show(todos.length)}>
         <input
-          type="checkbox"
-          value=""
-          checked={todos.every(todo => todo.done)}
+          type='checkbox'
+          value=''
+          checked={todos.every((todo) => todo.done)}
           onchange={() => emit('toggleAll')}
         />
         Mark all as done
       </label>
-      {filteredTodo.map(todo => (
+      {filteredTodo.map((todo) => (
         <TodoItem todo={todo} emit={emit} editTodo={editTodo} />
       ))}
-      <div domkey="status" class="panel-block" style={show(todos.length)}>
+      <div domkey='status' class='panel-block' style={show(todos.length)}>
         <strong>{remaining}</strong>
         {remaining === 1 ? ' item' : ' items'} left
       </div>
       <div
-        domkey="remove-dones"
-        class="panel-block"
+        domkey='remove-dones'
+        class='panel-block'
         style={show(todos.length > remaining)}
       >
         <button
-          class="button is-primary is-fullwidth"
+          class='button is-primary is-fullwidth'
           onclick={() => emit('removeDones')}
         >
           Clear done
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-const TodoItem = props => {
-  const { emit, todo, editTodo } = props
+const TodoItem = (props) => {
+  const { emit, todo, editTodo } = props;
   return (
-    <div domkey={'todo-' + todo.id} class="panel-block todo-item">
+    <div domkey={'todo-' + todo.id} class='panel-block todo-item'>
       <div style={show(todo !== editTodo)}>
         <input
-          type="checkbox"
-          value=""
+          type='checkbox'
+          value=''
           checked={todo.done}
           onchange={() => emit('toggle', { todo: todo })}
         />
@@ -89,54 +89,55 @@ const TodoItem = props => {
         </label>
       </div>
       <button
-        class="delete"
+        class='delete'
         style={show(todo !== editTodo)}
         onclick={() => emit('remove', { todo: todo })}
       />
       <input
-        class="input"
+        class='input'
         style={show(todo === editTodo)}
-        type="text"
+        type='text'
         value={editTodo ? editTodo.title : null}
         data-editing={todo === editTodo ? '*' : null}
-        onblur={ev => doneEdit(ev, emit, todo)}
-        onkeydown={ev => keydownEdit(ev, emit, todo)}
+        onblur={(ev) => doneEdit(ev, emit, todo)}
+        onkeydown={(ev) => keydownEdit(ev, emit, todo)}
       />
     </div>
-  )
-}
+  );
+};
 
 const keydownNewTodo = (ev, emit) => {
-  const key = ev.key
+  const { target, key } = ev;
   if (key === 'Enter') {
-    const title = ev.target.value
-    ev.target.value = ''
-    emit('add', { title: title })
+    const title = target.value;
+    target.value = '';
+    emit('add', { title: title });
   }
-}
+};
 
 const keydownEdit = (ev, emit, todo) => {
-  const key = ev.key
+  const { key } = ev;
   if (key === 'Enter') {
-    doneEdit(ev, emit, todo)
+    doneEdit(ev, emit, todo);
   } else if (key === 'Escape' || key === 'Esc') {
-    emit('cancelEdit', {})
+    emit('cancelEdit', {});
   }
-}
+};
 
 const doneEdit = (ev, emit, todo) => {
-  if (!ev.target.dataset.editing) {
-    return
+  const { target } = ev;
+  if (!target.dataset.editing) {
+    return;
   }
-  const v = ev.target.value
-  const title = v && v.trim()
+  const v = target.value;
+  const title = v && v.trim();
   if (title) {
-    emit('update', { todo: todo, title: title })
+    emit('update', { todo: todo, title: title });
   } else {
-    emit('remove', { todo: todo })
+    emit('remove', { todo: todo });
   }
-}
+};
 
-const show = a => (a ? '' : 'display:none')
+const show = (a) => (a ? '' : 'display:none');
 
-export default AppPage
+export default AppPage;

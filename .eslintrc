@@ -1,5 +1,12 @@
 {
-  "extends": "standard",
+  "extends": [
+    "standard",
+    "standard-jsx",
+    "prettier",
+    "prettier/standard",
+    "prettier/react"
+  ],
+  "plugins": ["standard", "prettier"],
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module",
@@ -7,12 +14,7 @@
       "jsx": true
     }
   },
-  "plugins": ["eslint-plugin-react"],
-  "rules": {
-    "indent": "off",
-    "react/jsx-uses-vars": "error",
-    "react/jsx-uses-react": "error"
-  },
+  "rules": {},
   "settings": {
     "react": {
       "pragma": "h"

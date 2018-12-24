@@ -1,54 +1,59 @@
-import filters from './filter'
+import filters from './filter';
 
-const storage = window.localStorage
-const STORAGE_KEY = 'js-todoapp'
+const storage = window.localStorage;
+const STORAGE_KEY = 'js-todoapp';
 
 const createModel = () => {
   const model = {
     todos: [],
     editTodo: null,
     newTodo: null,
-    load: () =>
-      (model.todos = JSON.parse(storage.getItem(STORAGE_KEY) || '[]')),
-    save: () => storage.setItem(STORAGE_KEY, JSON.stringify(model.todos)),
-    add: title => {
-      const value = title && title.trim()
+    load: () => {
+      model.todos = JSON.parse(storage.getItem(STORAGE_KEY) || '[]');
+    },
+    save: () => {
+      storage.setItem(STORAGE_KEY, JSON.stringify(model.todos));
+    },
+    add: (title) => {
+      const value = title && title.trim();
       if (!value) {
-        return
+        return;
       }
       model.todos.push({
         id: Date.now(),
         title: value,
         done: false
-      })
-      model.save()
+      });
+      model.save();
     },
     update: (todo, title) => {
       if (!title) {
-        return
+        return;
       }
-      todo.title = title
-      model.save()
+      todo.title = title;
+      model.save();
     },
-    remove: todo => {
-      model.todos = model.todos.filter(e => e.id !== todo.id)
-      model.save()
+    remove: (todo) => {
+      model.todos = model.todos.filter((e) => e.id !== todo.id);
+      model.save();
     },
     removeDones: () => {
-      model.todos = filters.active(model.todos)
-      model.save()
+      model.todos = filters.active(model.todos);
+      model.save();
     },
-    toggle: todo => {
-      todo.done = !todo.done
-      model.save()
+    toggle: (todo) => {
+      todo.done = !todo.done;
+      model.save();
     },
     toggleAll: () => {
-      const done = filters.done(model.todos).length === model.todos.length
-      model.todos.forEach(e => (e.done = !done))
-      model.save()
+      const done = filters.done(model.todos).length === model.todos.length;
+      model.todos.forEach((e) => {
+        e.done = !done;
+      });
+      model.save();
     }
-  }
-  return model
-}
+  };
+  return model;
+};
 
-export default createModel
+export default createModel;
