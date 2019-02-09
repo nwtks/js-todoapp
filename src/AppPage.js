@@ -3,9 +3,8 @@ import filters from './filter';
 
 const NAVS = ['all', 'active', 'done'];
 
-const AppPage = (props) => {
-  const { emit } = props;
-  const { todos, editTodo, newTodo, visibility } = props.state;
+const AppPage = ({ state, emit }) => {
+  const { todos, editTodo, newTodoTitle, visibility } = state;
   const remaining = filters.active(todos).length;
   const filteredTodo = filters[visibility](todos);
   setTimeout(() => {
@@ -21,7 +20,7 @@ const AppPage = (props) => {
         <input
           class='input'
           type='text'
-          value={newTodo}
+          value={newTodoTitle}
           placeholder='What needs to be done?'
           autofocus
           onkeydown={(ev) => keydownNewTodo(ev, emit)}
@@ -48,7 +47,7 @@ const AppPage = (props) => {
         Mark all as done
       </label>
       {filteredTodo.map((todo) => (
-        <TodoItem todo={todo} emit={emit} editTodo={editTodo} />
+        <TodoItem emit={emit} todo={todo} editTodo={editTodo} />
       ))}
       <div domkey='status' class='panel-block' style={show(todos.length)}>
         <strong>{remaining}</strong>
@@ -70,35 +69,34 @@ const AppPage = (props) => {
   );
 };
 
-const TodoItem = (props) => {
-  const { emit, todo, editTodo } = props;
+const TodoItem = ({ emit, todo, editTodo }) => {
   return (
     <div domkey={'todo-' + todo.id} class='panel-block todo-item'>
-      <div style={show(todo !== editTodo)}>
+      <div style={show(!editTodo || todo.id !== editTodo.id)}>
         <input
           type='checkbox'
           value=''
           checked={todo.done}
-          onchange={() => emit('toggle', { todo: todo })}
+          onchange={() => emit('toggle', { todo })}
         />
         <label
           class={'todo' + (todo.done ? ' done' : '')}
-          ondblclick={() => emit('startEdit', { todo: todo })}
+          ondblclick={() => emit('startEdit', { todo })}
         >
           {todo.title}
         </label>
       </div>
       <button
         class='delete'
-        style={show(todo !== editTodo)}
-        onclick={() => emit('remove', { todo: todo })}
+        style={show(!editTodo || todo.id !== editTodo.id)}
+        onclick={() => emit('remove', { todo })}
       />
       <input
         class='input'
-        style={show(todo === editTodo)}
+        style={show(editTodo && todo.id === editTodo.id)}
         type='text'
-        value={editTodo ? editTodo.title : null}
-        data-editing={todo === editTodo ? '*' : null}
+        value={editTodo && todo.id === editTodo.id ? editTodo.title : null}
+        data-editing={editTodo && todo.id === editTodo.id ? '*' : null}
         onblur={(ev) => doneEdit(ev, emit, todo)}
         onkeydown={(ev) => keydownEdit(ev, emit, todo)}
       />
@@ -111,7 +109,7 @@ const keydownNewTodo = (ev, emit) => {
   if (key === 'Enter') {
     const title = target.value;
     target.value = '';
-    emit('add', { title: title });
+    emit('add', { title });
   }
 };
 
@@ -132,9 +130,9 @@ const doneEdit = (ev, emit, todo) => {
   const v = target.value;
   const title = v && v.trim();
   if (title) {
-    emit('update', { todo: todo, title: title });
+    emit('update', { todo, title });
   } else {
-    emit('remove', { todo: todo });
+    emit('remove', { todo });
   }
 };
 

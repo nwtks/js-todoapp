@@ -1,59 +1,52 @@
-import createModel from './model';
+import update from './update';
 import AppPage from './AppPage';
 import filters from './filter';
 
-const start = (render, emitter, router) => {
-  const model = createModel();
-
+export default (emitter, store, render, router, storage) => {
   emitter
-    .on('add', (e) => {
-      model.add(e.title);
-      model.newTodo = null;
-      router.render();
+    .on('inputNew', (e) => {
+      store.update(update.inputNew, e);
     })
-    .on('update', (e) => {
-      model.update(e.todo, e.title);
-      model.editTodo = null;
-      router.render();
-    })
-    .on('remove', (e) => {
-      model.remove(e.todo);
-      model.editTodo = null;
-      router.render();
-    })
-    .on('removeDones', () => {
-      model.removeDones();
-      router.render();
-    })
-    .on('toggle', (e) => {
-      model.toggle(e.todo);
-      router.render();
-    })
-    .on('toggleAll', () => {
-      model.toggleAll();
-      router.render();
+    .on('add', () => {
+      store.update(update.addNew);
     })
     .on('startEdit', (e) => {
-      model.editTodo = e.todo;
-      router.render();
+      store.update(update.startEdit, e.todo);
     })
     .on('cancelEdit', () => {
-      model.editTodo = null;
-      router.render();
+      store.update(update.cancelEdit);
     })
-    .on('inputNew', (e) => {
-      model.newTodo = e.title;
+    .on('update', (e) => {
+      store.update(update.update, { id: e.todo.id, title: e.title });
+    })
+    .on('remove', (e) => {
+      store.update(update.remove, e.todo);
+    })
+    .on('removeDones', () => {
+      store.update(update.removeDones);
+    })
+    .on('toggle', (e) => {
+      store.update(update.toggle, e.todo);
+    })
+    .on('toggleAll', () => {
+      store.update(update.toggleAll);
+    })
+    .on('updateStore', (state) => {
+      storage.save(state.todos);
+      router.render();
     });
 
   router
     .route('#/:vis', (param, next) => {
-      filters[param.vis]
+      const visibility = param.vis;
+      filters[visibility]
         ? next(() => {
+            const { todos, editTodo, newTodoTitle } = store.getState();
             render(AppPage, {
-              todos: model.todos,
-              editTodo: model.editTodo,
-              newTodo: model.newTodo,
-              visibility: param.vis
+              todos,
+              editTodo,
+              newTodoTitle,
+              visibility
             });
           })
         : router.redirect('#/all');
@@ -62,8 +55,6 @@ const start = (render, emitter, router) => {
       router.redirect('#/all');
     });
 
-  model.load();
   router.start();
+  store.update(update.init, storage.load());
 };
-
-export default start;
