@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import h from 'vnoc';
+import h from '@nwtks/vnoc';
 import filters from './filter';
 
 const NAVS = ['all', 'active', 'done'];

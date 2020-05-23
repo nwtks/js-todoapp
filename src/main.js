@@ -1,5 +1,5 @@
-import createEmitter from 'temi';
-import createRouter from 'hashedpath';
+import createEmitter from '@nwtks/temi';
+import createRouter from '@nwtks/hashedpath';
 import createStore from './store';
 import createRender from './render';
 import createStorage from './storage';

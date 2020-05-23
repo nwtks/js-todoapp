@@ -1,5 +1,5 @@
-import patch from 'patch2dom';
-import createScheduler from 'rafsch';
+import patch from '@nwtks/patch2dom';
+import createScheduler from '@nwtks/rafsch';
 
 export default (emit, entry, viewEvent) => {
   const scheduler = createScheduler();

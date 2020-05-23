@@ -54,7 +54,7 @@ export default (emitter, store, render, router, storage) => {
               todos,
               editTodo,
               newTodoTitle,
-              visibility
+              visibility,
             });
           })
         : router.redirect('#/all');

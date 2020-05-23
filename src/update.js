@@ -17,7 +17,7 @@ export default {
       state.todos.push({
         id: Date.now(),
         title: value,
-        done: false
+        done: false,
       });
     }
     state.newTodoTitle = null;
@@ -66,5 +66,5 @@ export default {
       e.done = !done;
     });
     return state;
-  }
+  },
 };

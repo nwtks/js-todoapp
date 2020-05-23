@@ -15,7 +15,7 @@ export default (emit, updateEvent) => {
         }
       }
       return store;
-    }
+    },
   };
   return store;
 };

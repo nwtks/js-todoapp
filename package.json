@@ -1,16 +1,16 @@
 {
-  "name": "js-todoapp",
-  "version": "0.1.0",
+  "name": "@nwtks/js-todoapp",
+  "version": "0.2.0",
   "private": true,
   "description": "sample todo app.",
   "license": "MIT",
   "author": "nwtks",
   "dependencies": {
-    "hashedpath": "^0.1.0",
-    "patch2dom": "^0.1.0",
-    "rafsch": "^0.1.0",
-    "temi": "^0.1.0",
-    "vnoc": "^0.1.0"
+    "@nwtks/hashedpath": "^0.2.0",
+    "@nwtks/patch2dom": "^0.2.0",
+    "@nwtks/rafsch": "^0.2.0",
+    "@nwtks/temi": "^0.2.0",
+    "@nwtks/vnoc": "^0.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
