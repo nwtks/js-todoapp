@@ -34,6 +34,14 @@ export default (emitter, store, render, router, storage) => {
     .on('updateStore', (state) => {
       storage.save(state.todos);
       router.render();
+    })
+    .on('updateRender', (state) => {
+      if (state.editTodo) {
+        const editing = document.querySelector('[data-editing]');
+        if (editing) {
+          editing.focus();
+        }
+      }
     });
 
   router

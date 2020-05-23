@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import h from 'vnoc';
 import filters from './filter';
 
@@ -7,12 +8,6 @@ const AppPage = ({ state, emit }) => {
   const { todos, editTodo, newTodoTitle, visibility } = state;
   const remaining = filters.active(todos).length;
   const filteredTodo = filters[visibility](todos);
-  setTimeout(() => {
-    const editing = document.querySelector('[data-editing]');
-    if (editing) {
-      editing.focus();
-    }
-  }, 0);
   return (
     <div class='panel'>
       <div class='panel-heading has-background-info has-text-light'>Todos</div>

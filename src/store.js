@@ -9,7 +9,9 @@ export default (emit, updateEvent) => {
         const newState = JSON.stringify(result);
         if (state !== newState) {
           state = newState;
-          emit(updateEvent, store.getState());
+          if (updateEvent) {
+            emit(updateEvent, store.getState());
+          }
         }
       }
       return store;

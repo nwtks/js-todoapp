@@ -7,7 +7,11 @@ import start from './app';
 
 const emitter = createEmitter();
 const store = createStore(emitter.emit, 'updateStore');
-const render = createRender(emitter.emit, document.getElementById('app'));
+const render = createRender(
+  emitter.emit,
+  document.getElementById('app'),
+  'updateRender'
+);
 const router = createRouter();
 const storage = createStorage('js-todoapp');
 start(emitter, store, render, router, storage);
